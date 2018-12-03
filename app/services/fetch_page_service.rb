@@ -10,7 +10,7 @@ class FetchPageService
   end
 
   def html
-    url = '#{AMAZON_HOST}/#{asin}'
+    url = "#{AMAZON_HOST}/#{asin}"
 
     URI.parse(url).read
   end
