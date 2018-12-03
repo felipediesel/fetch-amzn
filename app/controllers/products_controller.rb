@@ -8,6 +8,7 @@ class ProductsController < ApplicationController
 
   def create
     @product = Product.create!(product_params)
+    LoadProductDataJob.perform_later(@product)
     render json: @product, status: :created
   end
 

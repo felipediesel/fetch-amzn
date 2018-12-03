@@ -51,10 +51,15 @@ RSpec.describe 'Products API', type: :request do
     let(:valid_attributes) { { asin: 'B07CXG6C9W' } }
 
     context 'when the request is valid' do
+      before { allow(LoadProductDataJob).to receive(:perform_later) }
       before { post '/products', params: valid_attributes }
 
       it 'creates a product' do
         expect(json['asin']).to eq('B07CXG6C9W')
+      end
+
+      it 'enquees a job to fetch product data' do
+        expect(LoadProductDataJob).to have_received(:perform_later).with(an_instance_of(Product))
       end
 
       it 'returns status code 201' do
