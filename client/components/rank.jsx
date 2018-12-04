@@ -6,10 +6,10 @@ export default class Rank extends React.Component {
     const { rank } = this.props;
 
     return (
-      <p>
+      <div>
         <span>#{rank.position} in </span>
-        <span><Categories categories={rank.categories} /></span>
-      </p>
+        <Categories categories={rank.categories} />
+      </div>
     );
   }
 }

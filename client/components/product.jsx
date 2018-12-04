@@ -3,6 +3,51 @@ import Rank from './rank';
 import Categories from './categories';
 
 export default class Product extends React.Component {
+  renderCategories(categories) {
+    if (!categories || categories.length == 0) {
+      return "";
+    }
+
+    return (
+      <tr>
+        <td>Category</td>
+        <td>
+          <Categories categories={categories} />
+        </td>
+      </tr>
+    )
+  }
+
+  renderDimensions(dimensions) {
+    if (!dimensions) {
+      return "";
+    }
+
+    return (
+      <tr>
+        <td>Dimensions</td>
+        <td>{dimensions}</td>
+      </tr>
+    )
+  }
+
+  renderRanks(ranks) {
+    if (!ranks || ranks.length == 0) {
+      return "";
+    }
+
+    return (
+      <tr>
+        <td>Ranking</td>
+        <td>
+          {ranks.map(rank => (
+            <Rank key={rank.id} rank={rank} />
+          ))}
+        </td>
+      </tr>
+    )
+  }
+
   render() {
     const { product } = this.props;
 
@@ -13,20 +58,13 @@ export default class Product extends React.Component {
     return (
       <div>
         <h2>{product.asin}</h2>
-        <dl>
-          <dt>Dimensions</dt>
-          <dd>{product.dimensions}</dd>
-          <dt>Category</dt>
-          <dd>
-            <Categories categories={product.categories} />
-          </dd>
-          <dt>Ranking</dt>
-          <dd>
-            {product.ranks.map(rank => (
-              <Rank key={rank.id} rank={rank} />
-            ))}
-          </dd>
-        </dl>
+        <table>
+          <tbody>
+            {this.renderDimensions(product.dimensions)}
+            {this.renderCategories(product.categories)}
+            {this.renderRanks(product.ranks)}
+          </tbody>
+        </table>
       </div>
     );
   }

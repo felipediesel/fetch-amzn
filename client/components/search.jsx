@@ -11,7 +11,25 @@ export default class App extends React.Component {
 
     fetch(`/products?asin=${search}`)
       .then(response => response.json())
-      .then(data => setProduct(data[0]));
+      .then(data => {
+        if (data.length > 0) {
+          setProduct(data[0]);
+        } else {
+          fetch(`/products`, {
+            method: 'POST',
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ asin: search }),
+          })
+          .then(response => response.json())
+          .then(data => {
+            setProduct(data);
+          })
+
+        }
+      });
   };
 
   render() {
