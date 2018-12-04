@@ -58,4 +58,16 @@ RSpec.describe Category, type: :model do
       end
     end
   end
+
+  describe '#tree' do
+    it 'returns an array with all parent categories and the current one' do
+      grandparent = Category.create! name: 'Baby Products'
+      parent = Category.create! name: 'Baby Care', parent: grandparent
+      category = Category.create! name: 'Teethers', parent: parent
+
+      expected_tree = [grandparent, parent, category]
+
+      expect(category.tree).to eq(expected_tree)
+    end
+  end
 end

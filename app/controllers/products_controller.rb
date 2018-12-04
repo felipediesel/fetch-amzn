@@ -2,8 +2,10 @@ class ProductsController < ApplicationController
   before_action :set_product, only: %i(show destroy)
 
   def index
-    @products = Product.all.includes(:ranks, :category)
-    render json: @products, include: %i(ranks category)
+    @products = Product.includes(:category, ranks: :category)
+    @products = @products.where(asin: params[:asin]) if params[:asin]
+
+    render json: @products, methods: :categories, include: { ranks: { methods: :categories } }
   end
 
   def create

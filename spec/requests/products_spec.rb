@@ -1,14 +1,19 @@
 require 'rails_helper'
 
 RSpec.describe 'Products API', type: :request do
-  let!(:product) { Product.create asin: "B002QYW8LW" }
-  let!(:product2) { Product.create asin: "B01DFKC2SO" }
-  let(:product_id) { product.id }
+  let!(:product) { Product.create asin: asin, category: category }
+  let!(:product2) { Product.create asin: 'B01DFKC2SO' }
 
+  let!(:category) { Category.create(name: 'Baby') }
+  let!(:rank) { Rank.create(position: 10, product: product, category: category) }
+
+  let(:product_id) { product.id }
+  let(:asin) { 'B002QYW8LW' }
   let(:json) { JSON.parse(response.body) }
 
   describe 'GET /products' do
-    before { get '/products' }
+    let(:params) { {} }
+    before { get '/products', params: params }
 
     it 'returns products' do
       expect(json).not_to be_empty
@@ -17,6 +22,35 @@ RSpec.describe 'Products API', type: :request do
 
     it 'returns status code 200' do
       expect(response).to have_http_status(200)
+    end
+
+    it 'includes ranks' do
+      expect(json[0]['id']).to eq(product_id)
+      expect(json[0]['ranks'].size).to eq(1)
+      expect(json[0]['ranks'][0]['id']).to eq(rank.id)
+    end
+
+    it 'includes ranks categories' do
+      categories = json[0]['ranks'][0]['categories']
+
+      expect(json[0]['id']).to eq(product_id)
+      expect(categories.size).to eq(1)
+      expect(categories[0]['id']).to eq(category.id)
+    end
+
+    it 'includes categories' do
+      expect(json[0]['id']).to eq(product_id)
+      expect(json[0]['categories'].size).to eq(1)
+      expect(json[0]['categories'][0]['id']).to eq(category.id)
+    end
+
+    context 'when asin param is provided' do
+      let(:params) { { asin: asin } }
+
+      it 'returns products with the provided asin' do
+        expect(json[0]['id']).to eq(product_id)
+        expect(json.size).to eq(1)
+      end
     end
   end
 

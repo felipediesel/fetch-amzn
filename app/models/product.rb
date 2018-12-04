@@ -3,4 +3,12 @@ class Product < ApplicationRecord
   has_many :ranks, dependent: :destroy
 
   validates :asin, presence: true
+
+  def categories
+    if category
+      category.tree
+    else
+      []
+    end
+  end
 end
