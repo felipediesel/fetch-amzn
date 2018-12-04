@@ -1,35 +1,23 @@
 import React from 'react';
+import ProductData from '../services/product_data';
 
 export default class App extends React.Component {
   nameRef = React.createRef();
 
-  submitForm = (event) => {
+  submitForm = async (event) => {
     const { setProduct } = this.props;
     const search = this.nameRef.current.value;
 
     event.preventDefault();
 
-    fetch(`/products?asin=${search}`)
-      .then(response => response.json())
-      .then(data => {
-        if (data.length > 0) {
-          setProduct(data[0]);
-        } else {
-          fetch(`/products`, {
-            method: 'POST',
-            headers: {
-              'Accept': 'application/json',
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ asin: search }),
-          })
-          .then(response => response.json())
-          .then(data => {
-            setProduct(data);
-          })
-
-        }
-      });
+    let data = await ProductData.fetchAll(search);
+    if (data.length > 0) {
+      data = data[0];
+    } else {
+      data = await ProductData.post({asin: search});
+    }
+    setProduct(data);
+    // B07CN1TVHX B002QYW8LW
   };
 
   render() {
