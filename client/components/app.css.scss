@@ -36,11 +36,27 @@ button {
 
 table {
   border-collapse: collapse;
+  width: 100%;
 
   td {
     vertical-align: top;
-    border-top: 1px solid #AAA;
+    border-bottom: 1px solid #AAA;
     margin: 0;
     padding: 1rem;
   }
+}
+
+h2 {
+  color: #fff;
+  background: #FF8B00;
+  text-align: center;
+  padding: 1rem;
+  margin-bottom: 0;
+}
+
+#fetching-product {
+  text-align: center;
+  color: #AAA;
+  font-size: .9rem;
+  padding: 1rem;
 }
