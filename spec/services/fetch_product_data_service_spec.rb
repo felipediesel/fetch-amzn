@@ -17,6 +17,11 @@ RSpec.describe FetchProductDataService, type: :model do
       expect(product.reload.dimensions).to eq(expected_dimensions)
     end
 
+    it 'updates product state to "ready"' do
+      subject.call
+      expect(product.reload.state).to eq("ready")
+    end
+
     it 'updates product category' do
       expected_category_name = 'Teethers'
       subject.call

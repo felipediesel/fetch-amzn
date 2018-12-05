@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_12_01_030713) do
+ActiveRecord::Schema.define(version: 2018_12_04_142243) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -29,6 +29,7 @@ ActiveRecord::Schema.define(version: 2018_12_01_030713) do
     t.string "dimensions"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "state", default: "progress", null: false
     t.index ["category_id"], name: "index_products_on_category_id"
   end
 
@@ -42,7 +43,6 @@ ActiveRecord::Schema.define(version: 2018_12_01_030713) do
     t.index ["product_id"], name: "index_ranks_on_product_id"
   end
 
-  add_foreign_key "categories", "categories", column: "parent_id"
   add_foreign_key "ranks", "categories"
   add_foreign_key "ranks", "products"
 end

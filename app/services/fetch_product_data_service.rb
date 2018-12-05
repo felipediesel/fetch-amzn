@@ -8,6 +8,7 @@ class FetchProductDataService
   def call
     product.dimensions = data.dimensions
     product.category = Category.create_from_list(data.categories).last
+    product.state = 'ready'
     product.save!
 
     data.ranking.each do |rank|

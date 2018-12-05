@@ -5,6 +5,7 @@ RSpec.describe Product, type: :model do
   it { is_expected.to belong_to(:category) }
 
   it { is_expected.to validate_presence_of(:asin) }
+  it { is_expected.to validate_inclusion_of(:state).in_array(%w(progress ready)) }
 
   describe 'categories' do
     context 'when the product has a category' do
