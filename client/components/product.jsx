@@ -3,6 +3,24 @@ import Rank from './rank';
 import Categories from './categories';
 
 export default class Product extends React.Component {
+  renderTable(product) {
+    if (product.state && product.state === 'progress') {
+      return (
+        <div id="fetching-product">Fetching data from amazon, please wait...</div>
+      )
+    } else {
+      return (
+      <table>
+        <tbody>
+          {this.renderDimensions(product.dimensions)}
+          {this.renderCategories(product.categories)}
+          {this.renderRanks(product.ranks)}
+        </tbody>
+      </table>
+      );
+    }
+  }
+
   renderCategories(categories) {
     if (!categories || categories.length == 0) {
       return "";
@@ -58,13 +76,7 @@ export default class Product extends React.Component {
     return (
       <div>
         <h2>{product.asin}</h2>
-        <table>
-          <tbody>
-            {this.renderDimensions(product.dimensions)}
-            {this.renderCategories(product.categories)}
-            {this.renderRanks(product.ranks)}
-          </tbody>
-        </table>
+        {this.renderTable(product)}
       </div>
     );
   }

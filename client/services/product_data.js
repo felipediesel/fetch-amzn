@@ -15,6 +15,3 @@ export default class ProductData {
     .then(response => response.json());
   }
 }
-            // setTimeout(() => {
-
-            // }, 3000)

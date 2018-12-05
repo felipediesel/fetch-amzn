@@ -5,19 +5,34 @@ export default class App extends React.Component {
   nameRef = React.createRef();
 
   submitForm = async (event) => {
-    const { setProduct } = this.props;
     const search = this.nameRef.current.value;
 
     event.preventDefault();
 
     let data = await ProductData.fetchAll(search);
-    if (data.length > 0) {
+
+    if (data.length > 0 ) {
       data = data[0];
     } else {
       data = await ProductData.post({asin: search});
     }
-    setProduct(data);
-    // B07CN1TVHX B002QYW8LW
+    this.props.setProduct(data);
+    if (data.state === 'progress') {
+      this.poolProduct(search)
+    }
+  };
+
+  poolProduct = (search) => {
+    setTimeout(async () => {
+      let data = await ProductData.fetchAll(search);
+      if (data.length > 0) {
+        this.props.setProduct(data[0]);
+      }
+
+      if (data[0].state === 'progress') {
+        this.poolProduct(search)
+      }
+    }, 1500);
   };
 
   render() {
